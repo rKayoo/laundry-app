@@ -2,25 +2,24 @@ const express = require('express');
 const server = express();
 const path = require('path');
 const router = express.Router();
-const users = require('./user.js');
 const sqlite3 = require('sqlite3');
 
-const db = new sqlite3.Database('../database.db', sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database('./database.db', sqlite3.OPEN_READWRITE, (err) => {
 	if(err) return console.error(err.message);
 
 	console.log("Connected to database!")
 });
 
-server.use(express.static("public"));
+server.use(express.static(__dirname + '/public'));
 
 server.use(express.urlencoded({ extended: true}));
 
 server.get("/", (req, res) => {
-  return res.sendFile(path.join(__dirname,"../frontend", "index.html"));
+  return res.sendFile(path.join(__dirname,"./frontend", "index.html"));
 });
 
 server.get('/login', (req, res) => {
-  return res.sendFile(path.join(__dirname,"../frontend", "login.html"));
+  return res.sendFile(path.join(__dirname,"./frontend", "login.html"));
 });
 
 server.post('/login', (req, res) => {
@@ -64,19 +63,18 @@ server.post('/login', (req, res) => {
 });
 
 server.get('/register', (req, res) => {
-  return res.sendFile(path.join(__dirname,"../frontend", "register.html"));
+  return res.sendFile(path.join(__dirname,"./frontend", "register.html"));
 });
 
 server.post('/register', (req, res) => {
   const keys = Object.keys(req.body);
-
 
   for(key of keys) {
     if (req.body[key] == '' || !req.body[key]) {
       return res.send('Please, fill all the fields!');
     }
   } 
-
+  
   const query = `INSERT INTO users(
     usfId,
     name,
