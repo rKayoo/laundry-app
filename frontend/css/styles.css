@@ -1,0 +1,11 @@
+.laundry-image{ 
+    height: 23vh;    
+}
+
+.busy_button { 
+    display: none;
+}
+
+.pending_button { 
+    display: none;
+}
